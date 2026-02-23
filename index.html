@@ -108,7 +108,7 @@
         .label-text {
             font-weight: bold;
             color: var(--ios-light-gray);
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
             display: flex;
             align-items: center;
             text-align: left;
@@ -122,7 +122,7 @@
             margin-left: 0.2rem;
         }
 
-        /* コンボボックス：自由入力と選択の両立 */
+        /* コンボボックス */
         .combo-container {
             position: relative;
             display: flex;
@@ -134,7 +134,7 @@
             width: 100%;
             height: 3rem;
             border-radius: 12px;
-            padding-right: 3rem; /* 右側のアイコン分のスペース */
+            padding-right: 3rem;
             background-color: #000000;
             color: var(--ios-light-gray);
             border: 1px solid var(--ios-border);
@@ -143,7 +143,6 @@
             font-weight: bold;
         }
 
-        /* プルダウンの起動スイッチを右端に限定 */
         .combo-trigger-area {
             position: absolute;
             right: 0;
@@ -166,19 +165,18 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 3rem; /* 右端3rem分だけで反応するように変更 */
+            width: 3rem;
             height: 100%;
             opacity: 0;
             z-index: 25;
             cursor: pointer;
         }
 
-        /* 合計枚数枠（オレンジ・細字） */
         .total-count-box {
             background-color: rgba(255, 159, 10, 0.15);
             border: 1px solid rgba(255, 159, 10, 0.3);
             color: var(--ios-orange);
-            padding: 14px;
+            padding: 8px 14px; 
             border-radius: 16px;
             font-weight: normal; 
             display: flex;
@@ -188,7 +186,6 @@
             font-size: 1.1rem;
         }
 
-        /* 割付表のテーブルスタイル */
         .result-table {
             width: 100%;
             border-collapse: collapse;
@@ -213,26 +210,23 @@
             border: 0.5px solid var(--ios-border);
             text-align: center;
             font-weight: 600;
+            font-size: 17px; 
         }
 
-        /* 片張りの列をブルーに、芯割りの列をグリーンに設定 */
         .result-table td:first-child { color: var(--ios-blue); }
         .result-table td:last-child { color: var(--ios-green); }
 
-        /* 交代色を解除し、グレーに統一 */
         .result-table tr {
             background-color: #1c1c1e;
         }
 
-        /* スクロール解除：max-heightとoverflow-yを削除 */
         .table-container {
             border: 0.5px solid var(--ios-border);
             border-radius: 20px;
             background-color: #000000;
-            overflow: hidden; /* 角丸を適用するため */
+            overflow: hidden;
         }
 
-        /* 割付寸法ヘッダー */
         .layout-info-bar {
             background: #2c2c2e;
             padding: 10px 16px;
@@ -245,7 +239,7 @@
             z-index: 20;
         }
 
-        /* 全長(L)入力枠：白文字・オレンジ縁 */
+        /* 入力枠スタイル */
         #totalLengthDisplay {
             background-color: var(--ios-input);
             color: #ffffff;
@@ -255,29 +249,106 @@
         #totalLengthDisplay::placeholder {
             font-weight: 200;
             opacity: 0.6;
+            font-size: 13px; 
         }
 
-        /* 全長芯：明るいグレー・黒背景 */
         #centerLength {
             background-color: #000000;
             border: 1px solid var(--ios-border);
             color: var(--ios-light-gray);
         }
 
-        /* 片張り/芯割り 配色 */
-        .box-blue-tint {
-            background-color: rgba(10, 132, 255, 0.12);
-            border: 1px solid rgba(10, 132, 255, 0.4);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+        /* 共通：グレータブ風ボックス */
+        .box-gray-tab {
+            background-color: var(--ios-input);
+            border: 1px solid var(--ios-border);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            padding: 4px 0;
         }
-        #taniZansun { color: var(--ios-blue); }
 
-        .box-green-tint {
-            background-color: rgba(48, 209, 88, 0.12);
-            border: 1px solid rgba(48, 209, 88, 0.4);
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+        /* 上部のアクセントライン */
+        .tab-top-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
         }
+
+        .line-blue { background-color: var(--ios-blue); }
+        .line-green { background-color: var(--ios-green); }
+
+        #taniZansun { color: var(--ios-blue); }
         #yamaZansun { color: var(--ios-green); }
+
+        /* 枠内：端材エリアのスタイル */
+        .inner-hazai-container {
+            position: absolute;
+            bottom: 5px;
+            right: 8px;
+            display: flex;
+            align-items: baseline;
+            gap: 3px;
+            pointer-events: none;
+        }
+
+        .inner-hazai-label {
+            font-size: 12px; /* 10pxから2pt大きく調整 */
+            color: var(--ios-secondary);
+            font-weight: bold;
+        }
+
+        .inner-hazai-value {
+            font-size: 16px; /* 14pxから2pt大きく調整 */
+            color: var(--ios-secondary);
+            font-weight: bold;
+        }
+
+        /* 列小見出し */
+        .column-subhead {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 6px 0;
+            border-radius: 10px;
+            margin-bottom: 2px;
+        }
+
+        .subhead-blue {
+            background-color: rgba(10, 132, 255, 0.15);
+            color: var(--ios-blue);
+            border: 1px solid rgba(10, 132, 255, 0.2);
+        }
+
+        .subhead-green {
+            background-color: rgba(48, 209, 88, 0.15);
+            color: var(--ios-green);
+            border: 1px solid rgba(48, 209, 88, 0.2);
+        }
+
+        /* 中央の境界線 */
+        .center-divider {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--ios-border);
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .table-label-small {
+            font-size: 11px;
+            font-weight: normal;
+            margin-right: 2px;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body class="p-4 pb-8">
@@ -295,7 +366,6 @@
         <div class="card">
             <div class="text-center mb-6 border-b border-gray-800 pb-4">
                 <h1 class="text-xl font-bold text-white">施工割付</h1>
-                <!-- Kyowa Roof Pro に変更し、サイズを text-[11px] に変更 -->
                 <p class="text-[11px] font-bold text-gray-500 mt-1 uppercase tracking-[0.2em]">Kyowa Roof Pro</p>
             </div>
 
@@ -304,9 +374,7 @@
                     <div>
                         <label class="label-text">タイプ<span class="unit-text">(mm)</span></label>
                         <div class="combo-container">
-                            <!-- 自由入力可能なinput -->
                             <input type="text" id="sizeInput" inputmode="numeric" value="780" class="combo-input">
-                            <!-- 右端のみで反応するプルダウン -->
                             <div class="combo-trigger-area">
                                 <span class="combo-trigger-icon">▼</span>
                                 <select id="sizeSelect" class="combo-select">
@@ -335,28 +403,50 @@
 
                 <div class="border-t border-gray-800 pt-4"></div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="label-text" style="color: var(--ios-blue);">片張り(残)</label>
-                        <div class="box-blue-tint rounded-xl h-16 flex items-center justify-center">
-                            <input type="text" id="taniZansun" readonly class="bg-transparent w-full text-2xl font-black">
+                <!-- 計算結果エリア -->
+                <div class="relative pt-2">
+                    <div class="center-divider"></div>
+
+                    <div class="space-y-3 relative z-10">
+                        <!-- 列小見出し -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="column-subhead subhead-blue">片張り</div>
+                            <div class="column-subhead subhead-green">芯割り</div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="label-text" style="color: var(--ios-green);">芯割り(残)</label>
-                        <div class="box-green-tint rounded-xl h-16 flex items-center justify-center">
-                            <input type="text" id="yamaZansun" readonly class="bg-transparent w-full text-2xl font-black">
+
+                        <!-- 数値表示行（端材を枠内に統合） -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="pr-2">
+                                <label class="label-text" style="color: var(--ios-blue);">最後の切寸法</label>
+                                <div class="box-gray-tab h-20 flex flex-col items-center justify-center pt-1">
+                                    <div class="tab-top-line line-blue"></div>
+                                    <input type="text" id="taniZansun" readonly class="bg-transparent w-full text-3xl font-black mb-1">
+                                    <div class="inner-hazai-container">
+                                        <span class="inner-hazai-label">端材</span>
+                                        <span id="taniHazai" class="inner-hazai-value">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pl-2">
+                                <label class="label-text" style="color: var(--ios-green);">始,終の切寸法</label>
+                                <div class="box-gray-tab h-20 flex flex-col items-center justify-center pt-1">
+                                    <div class="tab-top-line line-green"></div>
+                                    <input type="text" id="yamaZansun" readonly class="bg-transparent w-full text-3xl font-black mb-1">
+                                    <div class="inner-hazai-container">
+                                        <span class="inner-hazai-label">端材</span>
+                                        <span id="yamaHazai" class="inner-hazai-value">0</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 合計枚数枠（細字） -->
+                <!-- 合計枚数枠 -->
                 <div id="totalCountBoxCalc" class="total-count-box mt-4 hidden">
                     <span class="text-sm opacity-80">枚数の合計</span>
                     <span id="totalCountDisplayCalc">0 枚</span>
                 </div>
-                
-                <p class="text-center text-[10px] text-gray-600 tracking-widest pt-2">SWIPE TO VIEW TABLE</p>
             </div>
         </div>
     </div>
@@ -404,6 +494,8 @@
         const totalLengthDisplay = document.getElementById('totalLengthDisplay');
         const taniZansunInput = document.getElementById('taniZansun');
         const yamaZansunInput = document.getElementById('yamaZansun');
+        const taniHazaiValue = document.getElementById('taniHazai');
+        const yamaHazaiValue = document.getElementById('yamaHazai');
         const totalCountDisplay = document.getElementById('totalCountDisplay');
         const totalCountDisplayCalc = document.getElementById('totalCountDisplayCalc');
         const totalCountBoxCalc = document.getElementById('totalCountBoxCalc');
@@ -415,7 +507,6 @@
         const STORAGE_KEY = 'tight_frame_calc_v3';
         let currentTab = 'calc';
 
-        // --- タブ切り替え ---
         function switchTab(type) {
             currentTab = type;
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -426,7 +517,6 @@
             window.scrollTo(0, 0);
         }
 
-        // --- スワイプ処理 ---
         let touchStartX = 0;
         let touchStartY = 0;
         window.addEventListener('touchstart', (e) => {
@@ -444,7 +534,6 @@
             const threshold = 80;
             const verticalThreshold = 60;
             if (Math.abs(startY - endY) > verticalThreshold) return;
-            // 入力中はスワイプ無効
             if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') return;
 
             const diffX = startX - endX;
@@ -455,7 +544,6 @@
             }
         }
 
-        // --- 計算ロジック ---
         function formatVal(val) {
             if (isNaN(val) || val === null || val === undefined) return "0";
             return Math.floor(val).toLocaleString();
@@ -465,13 +553,15 @@
             tableBody.innerHTML = "";
             headerType.textContent = size + "mm";
             
+            const cutLabelHtml = '<span class="table-label-small">(切断寸)</span>';
+            
             let taniList = [];
             let currentTani = size;
             while (currentTani < L) {
                 taniList.push(formatVal(currentTani));
                 currentTani += size;
             }
-            if (finalTaniZan > 0) taniList.push(`(残) ${formatVal(finalTaniZan)}`);
+            if (finalTaniZan > 0) taniList.push(`${cutLabelHtml}${formatVal(finalTaniZan)}`);
 
             let yamaList = [];
             let currentYama = finalYamaZan; 
@@ -479,7 +569,7 @@
             while (currentYama <= L) {
                 if (currentYama >= 0) {
                     if (firstRow) {
-                        if (finalYamaZan > 0) yamaList.push(`(残) ${formatVal(currentYama)}`);
+                        if (finalYamaZan > 0) yamaList.push(`${cutLabelHtml}${formatVal(currentYama)}`);
                         firstRow = false;
                     } else if (currentYama > 0) {
                         yamaList.push(formatVal(currentYama));
@@ -492,9 +582,9 @@
             for (let i = 0; i < maxRows; i++) {
                 const tr = document.createElement('tr');
                 const tdTani = document.createElement('td');
-                tdTani.textContent = (taniList[i] !== undefined) ? taniList[i] : "-";
+                tdTani.innerHTML = (taniList[i] !== undefined) ? taniList[i] : "-";
                 const tdYama = document.createElement('td');
-                tdYama.textContent = (yamaList[i] !== undefined) ? yamaList[i] : "-";
+                tdYama.innerHTML = (yamaList[i] !== undefined) ? yamaList[i] : "-";
                 tr.appendChild(tdTani);
                 tr.appendChild(tdYama);
                 tableBody.appendChild(tr);
@@ -510,6 +600,8 @@
                 centerLengthInput.value = "";
                 taniZansunInput.value = "";
                 yamaZansunInput.value = "";
+                taniHazaiValue.textContent = "0";
+                yamaHazaiValue.textContent = "0";
                 totalCountSection.classList.add('hidden');
                 totalCountBoxCalc.classList.add('hidden');
                 noDataMessage.classList.remove('hidden');
@@ -527,8 +619,13 @@
             const yamaZan = (L / 2) % size;
             const totalCount = Math.ceil(L / size);
 
+            const taniHazai = taniZan > 0 ? size - taniZan : 0;
+            const yamaHazai = yamaZan > 0 ? size - yamaZan : 0;
+
             taniZansunInput.value = formatVal(taniZan);
             yamaZansunInput.value = formatVal(yamaZan);
+            taniHazaiValue.textContent = formatVal(taniHazai);
+            yamaHazaiValue.textContent = formatVal(yamaHazai);
             
             totalCountDisplay.textContent = totalCount + " 枚";
             totalCountDisplayCalc.textContent = totalCount + " 枚";
@@ -555,24 +652,21 @@
             }
         }
 
-        // --- イベント ---
         [sizeInput, totalLengthDisplay].forEach(el => {
             el.addEventListener('focus', (e) => e.target.select());
             el.addEventListener('mouseup', (e) => e.preventDefault());
         });
 
-        // タイプの直接入力
         sizeInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^\d]/g, '');
             calculate();
         });
 
-        // タイプの選択入力
         sizeSelect.addEventListener('change', (e) => {
             if (e.target.value !== "") {
                 sizeInput.value = e.target.value;
                 calculate();
-                sizeSelect.selectedIndex = 0; // 選択後リセット
+                sizeSelect.selectedIndex = 0;
             }
         });
 
@@ -582,7 +676,6 @@
             calculate();
         });
 
-        // エンターキーでキーボードを閉じる
         totalLengthDisplay.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.target.blur();
