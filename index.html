@@ -42,10 +42,33 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: flex-start;
             padding: 8px 12px;
             border-bottom: 1px solid var(--ios-border);
             background: var(--ios-bg);
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .share-btn {
+            border: 1px solid #4a4a4c;
+            background: #1c1c1e;
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .share-btn:active {
+            background: #2c2c2e;
         }
 
         /* スリムなタブ */
@@ -119,7 +142,7 @@
 
         .result-value {
             font-size: 37px; 
-            font-weight: 900;
+            font-weight: 700;
             color: #ffffff;
             display: flex;
             align-items: baseline;
@@ -128,7 +151,7 @@
 
         .result-label-left {
             font-size: 14px;
-            font-weight: 900;
+            font-weight: 600;
             color: #ffffff;
             text-align: left;
             line-height: 1.3;
@@ -145,7 +168,7 @@
 
         .separator-slash {
             font-size: 20px;
-            font-weight: 900;
+            font-weight: 700;
             opacity: 0.3;
             margin: 0 6px;
         }
@@ -193,7 +216,7 @@
 
         .input-value {
             font-size: 26px;
-            font-weight: 900;
+            font-weight: 700;
             color: #ffffff;
             flex: 1;
             text-align: right;
@@ -201,7 +224,7 @@
 
         .input-label-left {
             font-size: 14px;
-            font-weight: 900;
+            font-weight: 600;
             color: var(--label-gray);
             margin-right: 4px;
             white-space: nowrap;
@@ -210,7 +233,7 @@
         /* テンキー - セルと連結 */
         .keypad-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1px;
             background: var(--ios-border);
             margin: 0 12px 12px;
@@ -251,7 +274,7 @@
             padding: 6px 4px;
             border-bottom: 1px solid var(--ios-border);
             font-size: 18px;
-            font-weight: 900;
+            font-weight: 700;
             text-align: center;
         }
 
@@ -284,7 +307,88 @@
         }
         #toast.show { opacity: 1; }
         .hidden { display: none !important; }
+
+        .workspace {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            flex: 1;
+        }
+
+        .pane {
+            width: 100%;
+        }
+
+        @media (min-width: 900px) and (orientation: landscape) {
+            .main-container {
+                max-width: 1366px;
+                min-height: 100vh;
+            }
+            .workspace {
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 0;
+                padding: 8px 10px 12px;
+            }
+            .pane-calc,
+            .pane-table {
+                width: 50%;
+            }
+            .pane-calc {
+                border-right: 1px solid var(--ios-border);
+                padding-right: 8px;
+            }
+            .pane-table {
+                padding-left: 8px;
+                position: sticky;
+                top: calc(env(safe-area-inset-top) + 8px);
+                align-self: flex-start;
+            }
+            .result-stack { padding: 10px 12px 8px; }
+            .table-area { padding: 10px 12px 12px; }
+        }
+
     </style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="施工割付">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<meta name="format-detection" content="telephone=no">
+<style>
+#installBtn{
+  position:fixed;
+  right:16px;
+  bottom:calc(16px + env(safe-area-inset-bottom));
+  z-index:9999;
+  border:none;
+  border-radius:14px;
+  background:#2563eb;
+  color:#fff;
+  padding:12px 16px;
+  font-size:14px;
+  font-weight:700;
+  box-shadow:0 10px 24px rgba(0,0,0,.35);
+  display:none;
+}
+#installBtn:active{transform:scale(.98)}
+body{
+  padding-top: calc(env(safe-area-inset-top) + 10px);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+</style>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}
+</script>
+
 </head>
 <body>
 
@@ -294,19 +398,15 @@
         <!-- ヘッダー -->
         <div class="header-bar">
             <span style="font-size: 14px; font-weight: bold;">施工割付</span>
-            <span style="font-size: 12px; opacity: 0.8;">KYOWA ROOF</span>
-        </div>
-
-        <!-- タブメニュー -->
-        <div class="tab-wrapper">
-            <div class="tab-container">
-                <button id="tab-calc" class="tab-button active" onclick="switchTab('calc')">計算入力</button>
-                <button id="tab-table" class="tab-button" onclick="switchTab('table')">割付表</button>
+            <div class="header-right">
+                <button type="button" class="share-btn" onclick="shareAllData()">共有</button>
+                <span style="font-size: 12px; opacity: 0.8;">KYOWA ROOF</span>
             </div>
         </div>
 
+                <div class="workspace">
         <!-- 計算画面 -->
-        <div id="view-calc">
+        <div id="view-calc" class="pane pane-calc">
             <!-- 結果パネル -->
             <div class="result-stack">
                 <div class="result-box result-box-blue" onclick="copyValue('resTani')">
@@ -344,36 +444,32 @@
                     <div id="display-totalLength" class="input-value">0</div>
                 </div>
             </div>
-
             <!-- テンキー (連結デザイン) -->
             <div class="keypad-container">
                 <button class="key-btn" onclick="pressKey('7')">7</button>
                 <button class="key-btn" onclick="pressKey('8')">8</button>
                 <button class="key-btn" onclick="pressKey('9')">9</button>
-                <button class="key-btn gray key-clear" onclick="pressKey('clearEntry')">C</button>
-                
+
                 <button class="key-btn" onclick="pressKey('4')">4</button>
                 <button class="key-btn" onclick="pressKey('5')">5</button>
                 <button class="key-btn" onclick="pressKey('6')">6</button>
-                <button class="key-btn gray key-clear" onclick="pressKey('clearAll')">AC</button>
-                
+
                 <button class="key-btn" onclick="pressKey('1')">1</button>
                 <button class="key-btn" onclick="pressKey('2')">2</button>
                 <button class="key-btn" onclick="pressKey('3')">3</button>
-                <button class="key-btn orange row-span-2 h-full" id="enter-btn-label" onclick="pressKey('enter')">⏎</button>
-                
+
                 <button class="key-btn" onclick="pressKey('0')">0</button>
                 <button class="key-btn" onclick="pressKey('00')">00</button>
-                <button class="key-btn" onclick="pressKey('000')">000</button>
+                <button class="key-btn gray key-clear" onclick="pressKey('clearAll')">クリア</button>
             </div>
         </div>
 
         <!-- 割付表画面 -->
-        <div id="view-table" class="hidden">
+        <div id="view-table" class="pane pane-table">
             <div class="table-area">
                 <div class="table-card">
                     <div class="bg-[#2c2c2e] p-3 flex justify-between items-center border-b border-[#444]">
-                        <span class="font-black text-base">全長: <span id="table-badge-L">-</span>㎜</span>
+                        <span class="font-bold text-base">全長: <span id="table-badge-L">-</span>㎜</span>
                         <span class="text-sm bg-[#ff9f0a] px-2 py-0.5 rounded font-bold text-black shadow-sm">割付表</span>
                     </div>
                     <table class="w-full">
@@ -400,10 +496,10 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 
 <script>
-    let currentActiveTab = 'calc';
     let focusedInputId = 'totalLength';
     let isOverwriteMode = true; 
     const storageKey = 'seko_waritsuke_v10_final';
@@ -413,16 +509,7 @@
         size: '780'
     };
 
-    function switchTab(tabName) {
-        currentActiveTab = tabName;
-        document.getElementById('view-calc').classList.toggle('hidden', tabName !== 'calc');
-        document.getElementById('view-table').classList.toggle('hidden', tabName !== 'table');
-        document.getElementById('tab-calc').classList.toggle('active', tabName === 'calc');
-        document.getElementById('tab-table').classList.toggle('active', tabName === 'table');
-        
-        if (tabName === 'table') generateTable();
-        window.scrollTo(0, 0);
-    }
+    
 
     function focusInput(id) {
         document.querySelectorAll('.calc-cell').forEach(el => el.classList.remove('focused'));
@@ -435,16 +522,10 @@
     }
 
     function pressKey(key) {
-        if (key === 'clearEntry') {
-            inputs[focusedInputId] = '';
-            isOverwriteMode = false;
-        } else if (key === 'clearAll') {
+        if (key === 'clearAll') {
             inputs.totalLength = '';
             inputs.size = '780';
             isOverwriteMode = true;
-        } else if (key === 'enter') {
-            handleEnter();
-            return;
         } else {
             if (isOverwriteMode) {
                 inputs[focusedInputId] = key;
@@ -460,7 +541,7 @@
 
     function handleEnter() {
         if (focusedInputId === 'size') focusInput('totalLength');
-        else if (focusedInputId === 'totalLength') switchTab('table');
+        else if (focusedInputId === 'totalLength') generateTable();
     }
 
     function updateDisplay() {
@@ -509,6 +590,7 @@
         const shinHazai = shinZan > 0 ? size - shinZan : 0;
         resShin.innerText = Math.round(shinZan).toLocaleString();
         resShinHazai.innerText = Math.round(shinHazai).toLocaleString();
+        generateTable();
     }
 
     function generateTable() {
@@ -596,33 +678,119 @@
         setTimeout(() => t.classList.remove('show'), 1000);
     }
 
-    let touchStartX = 0;
-    let touchStartY = 0;
 
-    document.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].clientX;
-        touchStartY = e.changedTouches[0].clientY;
-    }, { passive: true });
 
-    document.addEventListener('touchend', e => {
-        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+    function buildShareText() {
+        const getText = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.innerText.trim() : '-';
+        };
 
-        const touchEndX = e.changedTouches[0].clientX;
-        const touchEndY = e.changedTouches[0].clientY;
+        const lines = [];
+        lines.push('【施工割付】');
+        lines.push('');
+        lines.push('■入力値');
+        lines.push(`働き幅: ${inputs.size ? Number(inputs.size).toLocaleString('ja-JP') : '0'} mm`);
+        lines.push(`全長 (L): ${inputs.totalLength ? Number(inputs.totalLength).toLocaleString('ja-JP') : '0'} mm`);
+        lines.push(`全長芯: ${getText('display-centerL')} mm`);
+        lines.push('');
+        lines.push('■計算結果');
+        lines.push(`片張り 終寸: ${getText('resTani')} mm / 端材 ${getText('resTaniHazai')} mm`);
+        lines.push(`芯割り 始終寸: ${getText('resShin')} mm / 端材 ${getText('resShinHazai')} mm`);
+        lines.push('');
+        lines.push('■割付表');
+        const rows = document.querySelectorAll('#resultTableBody tr');
+        rows.forEach((tr, idx) => {
+            const tds = tr.querySelectorAll('td');
+            if (tds.length >= 2) {
+                const kata = tds[0].innerText.trim().replace(/\s+/g, ' ');
+                const shin = tds[1].innerText.trim().replace(/\s+/g, ' ');
+                lines.push(`No.${idx + 1}  片張り:${kata}  芯割り:${shin}`);
+            }
+        });
+        lines.push('');
+        lines.push('■集計');
+        lines.push(`全長: ${getText('table-badge-L')} mm`);
+        lines.push(`合計枚数: ${getText('foot-totalCount')} 枚`);
+        lines.push(`働き幅: ${getText('foot-size')} mm`);
+        return lines.join('\n');
+    }
 
-        const deltaX = touchStartX - touchEndX;
-        const deltaY = Math.abs(touchStartY - touchEndY);
+    async function shareAllData() {
+        const text = buildShareText();
+        const shareData = {
+            title: '施工割付',
+            text
+        };
 
-        if (Math.abs(deltaX) > 80 && deltaY < 100) {
-            if (deltaX > 0 && currentActiveTab === 'calc') switchTab('table');
-            else if (deltaX < 0 && currentActiveTab === 'table') switchTab('calc');
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+                return;
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                showToast('コピーしました');
+                return;
+            }
+
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast('コピーしました');
+        } catch (error) {
+            if (error && error.name === 'AbortError') return;
+            try {
+                const temp = document.createElement('textarea');
+                temp.value = text;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
+                showToast('コピーしました');
+            } catch (copyError) {
+                alert(text);
+            }
         }
-    }, { passive: true });
+    }
 
     window.onload = () => {
         loadFromStorage();
         focusInput('totalLength');
+        generateTable();
     };
 </script>
+
+<button id="installBtn" aria-label="このアプリをインストール">アプリをインストール</button>
+<script>
+(function() {
+  let deferredPrompt = null;
+  const btn = document.getElementById('installBtn');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!isStandalone) btn.style.display = 'block';
+  });
+
+  btn.addEventListener('click', async function() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    try { await deferredPrompt.userChoice; } catch (e) {}
+    deferredPrompt = null;
+    btn.style.display = 'none';
+  });
+
+  window.addEventListener('appinstalled', function() {
+    btn.style.display = 'none';
+  });
+})();
+</script>
+
 </body>
 </html>
